@@ -5,7 +5,7 @@ hostname = api-production.endel.io, api.interpreter.caiyunai.com, www.lumosity.c
 ^https:\/\/www\.lumosity\.com\/api\/v2\/(subscriptions|user) url script-response-body 1MichaelChoi/Lumosity.js
 ^https:\/\/subscription\.fifthstarlabs\.io\/verify\.php url script-response-body 1MichaelChoi/Sky.js
 ^https:\/\/billing\.peakcloud\.org\/billing\/2\/user\/me url script-response-body 1MichaelChoi/Peak.js
-^https:\/\/api\.sololearn\.com\/(authenticateDevice|challenge\/GetContestFeed|Profile\/GetProfile)$ url script-response-body 1MichaelChoi/Sololearn.js
+;^https:\/\/api\.sololearn\.com\/(authenticateDevice|challenge\/GetContestFeed|Profile\/GetProfile)$ url script-response-body 1MichaelChoi/Sololearn.js
 ^https:\/\/api\.flexibits\.com\/v1\/(auth|account)\/(device|details|appstore-receipt)\/$ url script-response-body 1MichaelChoi/Fantastical.js
 ^https:\/\/api\.revenuecat\.com\/.*\/(receipts$|subscribers) url script-response-body 1MichaelChoi/Revenuecat.js
 ^https:\/\/api\.tophub\.today\/account\/sync url script-response-body 1MichaelChoi/Jrrb.js
