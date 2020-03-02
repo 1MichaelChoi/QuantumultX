@@ -50,8 +50,5 @@ https://app.bilibili.com/x/v2/view\?access_key url script-response-body nzw9314/
 https://api.bilibili.com/x/v2/reply/main\?access_key url script-response-body nzw9314/onewayticket255/surge%20bilibili%20reply.js
 https://api.live.bilibili.com/xlive/app-room/v1/index/getInfoByRoom\?access_key url script-response-body nzw9314/onewayticket255/surge%20bilibili%20live.js
 
-# 哔哩哔哩动画 精简去广告 (By @Kaya)
-^https:\/\/app\.bilibili\.com\/(search\/resource|x\/(resource\/show\/tab|v2\/(view|rank|feed|reply\/main|account\/mine))) url script-response-body nzw9314/Script/Bilibili.js
-
 #哔哩哔哩个人排行榜
 ^https:\/\/app\.bilibili\.com\/x\/v2\/space\?access_key url script-response-body nzw9314/Script/bilibili_space_qx.js
