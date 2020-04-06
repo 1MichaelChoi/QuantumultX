@@ -2,10 +2,10 @@
 
 京东多合一签到脚本
 
-更新于: 2020.3.31 17:00 v0.91
-有效接口: 22+
-兼容: QuantumultX, Surge, Loon, JSBox, Node.js
-TG频道: @NobyDa 
+更新时间: 2020.4.5 0:30 v0.93
+有效接口: 20+
+脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
+电报频道: @NobyDa 
 问题反馈: @NobyDa_bot 
 如果转载: 请注明出处
 
@@ -81,7 +81,7 @@ var stop = 10000; //自定义延迟签到,单位毫秒,(如填200则每个接口
 var DeleteCookie = false; //是否清除Cookie, true则开启
 
 var $nobyda = nobyda();
-var start = ReadCookie();
+
 async function all() {
 
   if (stop == 0) {
@@ -99,7 +99,7 @@ async function all() {
     JingDMakeup(stop), //京东美妆馆
     JingDongWomen(stop), //京东女装馆
     JingDongCash(stop), //京东现金红包
-    JingDongShoes(stop), //京东鞋靴馆
+    //JingDongShoes(stop), //京东鞋靴馆
     JingDongFood(stop), //京东美食馆
     JingRSeeAds(stop), //金融看广告
     JingRongGame(stop), //金融游戏大厅
@@ -125,7 +125,7 @@ async function all() {
     await JingDMakeup(stop); //京东美妆馆
     await JingDongWomen(stop); //京东女装馆
     await JingDongCash(stop); //京东现金红包
-    await JingDongShoes(stop); //京东鞋靴馆
+    //await JingDongShoes(stop); //京东鞋靴馆
     await JingDongFood(stop); //京东美食馆
     await JingRSeeAds(stop); //金融看广告
     await JingRongGame(stop); //金融游戏大厅
@@ -142,32 +142,6 @@ async function all() {
   TotalBean() //总京豆查询
   ])
   await notify(); //通知模块
-}
-
-var merge = {
-  JDBean:  {success:0,fail:0,bean:0,steel:0,notify:''},
-  JDTurn:  {success:0,fail:0,bean:0,steel:0,notify:''},
-  JRBean:  {success:0,fail:0,bean:0,steel:0,notify:''},
-  JRDSign: {success:0,fail:0,bean:0,steel:0,notify:''},
-  JDGStore:{success:0,fail:0,bean:0,steel:0,notify:''},
-  JDClocks:{success:0,fail:0,bean:0,steel:0,notify:''},
-  JDPet:   {success:0,fail:0,bean:0,steel:0,notify:''},
-  JDFSale: {success:0,fail:0,bean:0,steel:0,notify:''},
-  JDBook:  {success:0,fail:0,bean:0,steel:0,notify:''},
-  JDShand: {success:0,fail:0,bean:0,steel:0,notify:''},
-  JDMakeup:{success:0,fail:0,bean:0,steel:0,notify:''},
-  JDWomen: {success:0,fail:0,bean:0,steel:0,notify:''},
-  JDShoes: {success:0,fail:0,bean:0,steel:0,notify:''},
-  JRGame:  {success:0,fail:0,bean:0,steel:0,notify:''},
-  JRSeeAds:{success:0,fail:0,bean:0,steel:0,notify:''},
-  JDLive:  {success:0,fail:0,bean:0,steel:0,notify:''},
-  JDCare:  {success:0,fail:0,bean:0,steel:0,notify:''},
-  JDFood:  {success:0,fail:0,bean:0,steel:0,notify:''},
-  JDClean: {success:0,fail:0,bean:0,steel:0,notify:''},
-  JDPrize: {success:0,fail:0,bean:0,steel:0,notify:'',key:0},
-  JRSteel: {success:0,fail:0,bean:0,steel:0,notify:'',TSteel:0},
-  JDCash:  {success:0,fail:0,bean:0,steel:0,notify:'',Cash:0,TCash:0},
-  JDShake: {success:0,fail:0,bean:0,steel:0,notify:'',Qbear:0,nackname:''}
 }
 
 function notify() {
@@ -194,8 +168,8 @@ function notify() {
       var TSteel = steel ? steel + "钢镚, " : ""
       var TCash = merge.JDCash.Cash ? merge.JDCash.Cash + "红包" : ""
       var Tbsc = Tbean ? "\n" : TSteel ? "\n" : TCash ? "\n" : "获取失败\n"
-      var Ts = success != 0 ? "成功" + success + "个, " : ""
-      var Tf = fail != 0 ? "失败" + fail + "个" : ""
+      var Ts = success ? "成功" + success + "个" + (fail ? ", " : "") : ""
+      var Tf = fail ? "失败" + fail + "个" : success ? "" : "获取失败"
       var one = "【签到概览】:  " + Ts + Tf + "\n"
       var two = "【签到总计】:  " + Tbean + TSteel + TCash + Tbsc
       var three = "【账号总计】:  " + beans + Steel + Cash + bsc
@@ -224,6 +198,7 @@ function notify() {
 
 function ReadCookie() {
 
+  initial()
   $nobyda.done()
   DualAccount = true;
 
@@ -285,22 +260,9 @@ function ReadCookie() {
 }
 
 function double() {
+  initial()
   add = true
   DualAccount = false
-
-  for (var i in merge) {
-    merge[i].success = 0;
-    merge[i].fail = 0;
-    merge[i].bean = 0;
-    merge[i].steel = 0;
-    merge[i].notify = '';
-    merge[i].key = 0;
-    merge[i].TSteel = 0;
-    merge[i].Cash = 0;
-    merge[i].TCash = 0;
-    merge[i].Qbear = 0;
-    merge[i].nickname = '';
-  }
 
   if ($nobyda.isJSBox) {
     if (DualKey || $file.exists("shared://JD_Cookie2.txt")) {
@@ -1039,7 +1001,7 @@ function JingDongBook(s) {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded", Cookie: KEY,
       },
-      body: "body=%7B%22riskParam%22%3A%7B%22eid%22%3A%22O5X6JYMZTXIEX4VBCBWEM5PTIZV6HXH7M3AI75EABM5GBZYVQKRGQJ5A2PPO5PSELSRMI72SYF4KTCB4NIU6AZQ3O6C3J7ZVEP3RVDFEBKVN2RER2GTQ%22%2C%22shshshfpb%22%3A%22v1%5C%2FzMYRjEWKgYe%2BUiNwEvaVlrHBQGVwqLx4CsS9PH1s0s0Vs9AWk%2B7vr9KSHh3BQd5NTukznDTZnd75xHzonHnw%3D%3D%22%2C%22pageClickKey%22%3A%22Babel_Sign%22%2C%22childActivityUrl%22%3A%22https%3A%5C%2F%5C%2Fpro.m.jd.com%5C%2Fmall%5C%2Factive%5C%2F3SC6rw5iBg66qrXPGmZMqFDwcyXi%5C%2Findex.html%3Fcu%3Dtrue%26utm_source%3Dwww.linkstars.com%26utm_medium%3Dtuiguang%26utm_campaign%3Dt_1000089893_157_0_184__cc59020469361878%26utm_term%3De04e88b40a3c4e24898da7fcee54a609%22%7D%2C%22url%22%3A%22https%3A%5C%2F%5C%2Fpro.m.jd.com%5C%2Fmall%5C%2Factive%5C%2F3SC6rw5iBg66qrXPGmZMqFDwcyXi%5C%2Findex.html%3Fcu%3Dtrue%26utm_source%3Dwww.linkstars.com%26utm_medium%3Dtuiguang%26utm_campaign%3Dt_1000089893_157_0_184__cc59020469361878%26utm_term%3De04e88b40a3c4e24898da7fcee54a609%22%2C%22params%22%3A%22%7B%5C%22enActK%5C%22%3A%5C%22ziJpxomssJzA0Lnt9V%2BVYoW5AbqAOQ6XiMQuejSm7msaZs%5C%2Fn4coLNw%3D%3D%5C%22%2C%5C%22isFloatLayer%5C%22%3Afalse%2C%5C%22ruleSrv%5C%22%3A%5C%2200416621_28128239_t1%5C%22%2C%5C%22signId%5C%22%3A%5C%22jw9BKb%5C%2Fb%2BfEaZs%5C%2Fn4coLNw%3D%3D%5C%22%7D%22%2C%22geo%22%3A%7B%22lng%22%3A%220.000000%22%2C%22lat%22%3A%220.000000%22%7D%7D&client=apple&clientVersion=8.4.6&openudid=1fce88cd05c42fe2b054e846f11bdf33f016d676&sign=c1d6bdbb17d0d3f8199557265c6db92c&st=1579305128990&sv=121"
+      body: "body=%7B%22riskParam%22%3A%7B%22eid%22%3A%22O5X6JYMZTXIEX4VBCBWEM5PTIZV6HXH7M3AI75EABM5GBZYVQKRGQJ5A2PPO5PSELSRMI72SYF4KTCB4NIU6AZQ3O6C3J7ZVEP3RVDFEBKVN2RER2GTQ%22%2C%22shshshfpb%22%3A%22v1%5C%2FzMYRjEWKgYe%2BUiNwEvaVlrHBQGVwqLx4CsS9PH1s0s0Vs9AWk%2B7vr9KSHh3BQd5NTukznDTZnd75xHzonHnw%3D%3D%22%2C%22pageClickKey%22%3A%22Babel_Sign%22%2C%22childActivityUrl%22%3A%22-1%22%7D%2C%22url%22%3A%22%22%2C%22params%22%3A%22%7B%5C%22enActK%5C%22%3A%5C%22AuXUNBuURqQo8OkYXxL9sIRG5nIWu%2BWaFhByI5i12FYaZs%5C%2Fn4coLNw%3D%3D%5C%22%2C%5C%22isFloatLayer%5C%22%3Afalse%2C%5C%22ruleSrv%5C%22%3A%5C%2200416621_31509838_t1%5C%22%2C%5C%22signId%5C%22%3A%5C%22lY9Nw3e1s8saZs%5C%2Fn4coLNw%3D%3D%5C%22%7D%22%2C%22geo%22%3A%7B%22lng%22%3A%220.000000%22%2C%22lat%22%3A%220.000000%22%7D%7D&client=apple&clientVersion=8.5.6&d_brand=apple&openudid=1fce88cd05c42fe2b054e846f11bdf33f016d676&rfs=0000&scope=11&sign=d0d702aaf94ea98b4315421271cda176&st=1586016821504&sv=120"
     };
 
     $nobyda.post(JDBookUrl, function(error, response, data) {
@@ -1163,7 +1125,7 @@ function JingDMakeup(s) {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded", Cookie: KEY,
       },
-      body: "body=%7B%22riskParam%22%3A%7B%22eid%22%3A%22O5X6JYMZTXIEX4VBCBWEM5PTIZV6HXH7M3AI75EABM5GBZYVQKRGQJ5A2PPO5PSELSRMI72SYF4KTCB4NIU6AZQ3O6C3J7ZVEP3RVDFEBKVN2RER2GTQ%22%2C%22shshshfpb%22%3A%22v1%5C%2FzMYRjEWKgYe%2BUiNwEvaVlrHBQGVwqLx4CsS9PH1s0s0Vs9AWk%2B7vr9KSHh3BQd5NTukznDTZnd75xHzonHnw%3D%3D%22%2C%22pageClickKey%22%3A%22Babel_Sign%22%2C%22childActivityUrl%22%3A%22-1%22%7D%2C%22url%22%3A%22%22%2C%22params%22%3A%22%7B%5C%22enActK%5C%22%3A%5C%22Ivkdqs6fb5SN1HsgsPsE7vJN9NGIydei6Ik%2B1rAyngwaZs%5C%2Fn4coLNw%3D%3D%5C%22%2C%5C%22isFloatLayer%5C%22%3Afalse%2C%5C%22ruleSrv%5C%22%3A%5C%2200138455_30206794_t1%5C%22%2C%5C%22signId%5C%22%3A%5C%22YU1cvfWmabwaZs%5C%2Fn4coLNw%3D%3D%5C%22%7D%22%2C%22geo%22%3A%7B%22lng%22%3A%220.000000%22%2C%22lat%22%3A%220.000000%22%7D%7D&build=167092&client=apple&clientVersion=8.5.2&d_brand=apple&openudid=1fce88cd05c42fe2b054e846f11bdf33f016d676&scope=11&sign=cc38bf6e24fd65e4f43868ccbe679f85&st=1582992598833&sv=112"
+      body: "body=%7B%22riskParam%22%3A%7B%22eid%22%3A%22O5X6JYMZTXIEX4VBCBWEM5PTIZV6HXH7M3AI75EABM5GBZYVQKRGQJ5A2PPO5PSELSRMI72SYF4KTCB4NIU6AZQ3O6C3J7ZVEP3RVDFEBKVN2RER2GTQ%22%2C%22shshshfpb%22%3A%22v1%5C%2FzMYRjEWKgYe%2BUiNwEvaVlrHBQGVwqLx4CsS9PH1s0s0Vs9AWk%2B7vr9KSHh3BQd5NTukznDTZnd75xHzonHnw%3D%3D%22%2C%22pageClickKey%22%3A%22Babel_Sign%22%2C%22childActivityUrl%22%3A%22-1%22%7D%2C%22url%22%3A%22%22%2C%22params%22%3A%22%7B%5C%22enActK%5C%22%3A%5C%22kxGmaHHlHxb9ayMnCAyH%2BwnZoaFBVYHTRtJqXAL04gcaZs%5C%2Fn4coLNw%3D%3D%5C%22%2C%5C%22isFloatLayer%5C%22%3Afalse%2C%5C%22ruleSrv%5C%22%3A%5C%2200138455_31540104_t1%5C%22%2C%5C%22signId%5C%22%3A%5C%22vFp%2BUpqhEVwaZs%5C%2Fn4coLNw%3D%3D%5C%22%7D%22%2C%22geo%22%3A%7B%22lng%22%3A%220.000000%22%2C%22lat%22%3A%220.000000%22%7D%7D&client=apple&clientVersion=8.5.6&d_brand=apple&openudid=1fce88cd05c42fe2b054e846f11bdf33f016d676&partner=apple&rfs=0000&scope=11&sign=9d9b898ac868dd334f16d090b49c9d1c&st=1585758305453&sv=100"
     };
 
     $nobyda.post(JDMUrl, function(error, response, data) {
@@ -1225,7 +1187,7 @@ function JingDongClean(s) {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded", Cookie: KEY,
       },
-      body: "body=%7B%22riskParam%22%3A%7B%22eid%22%3A%22O5X6JYMZTXIEX4VBCBWEM5PTIZV6HXH7M3AI75EABM5GBZYVQKRGQJ5A2PPO5PSELSRMI72SYF4KTCB4NIU6AZQ3O6C3J7ZVEP3RVDFEBKVN2RER2GTQ%22%2C%22shshshfpb%22%3A%22v1%5C%2FzMYRjEWKgYe%2BUiNwEvaVlrHBQGVwqLx4CsS9PH1s0s0Vs9AWk%2B7vr9KSHh3BQd5NTukznDTZnd75xHzonHnw%3D%3D%22%2C%22pageClickKey%22%3A%22Babel_Sign%22%2C%22childActivityUrl%22%3A%22-1%22%7D%2C%22url%22%3A%22%22%2C%22params%22%3A%22%7B%5C%22enActK%5C%22%3A%5C%22eODg3hfm3fuuqL4C%2B0PEuyilmPGJ%5C%2F3a2OgGu9YgS4AQaZs%5C%2Fn4coLNw%3D%3D%5C%22%2C%5C%22isFloatLayer%5C%22%3Afalse%2C%5C%22ruleSrv%5C%22%3A%5C%2200561054_31521509_t1%5C%22%2C%5C%22signId%5C%22%3A%5C%22kfuLCTw%5C%2F9mAaZs%5C%2Fn4coLNw%3D%3D%5C%22%7D%22%2C%22geo%22%3A%7B%22lng%22%3A%220.000000%22%2C%22lat%22%3A%220.000000%22%7D%7D&client=apple&clientVersion=8.5.5&openudid=1fce88cd05c42fe2b054e846f11bdf33f016d676&partner=apple&scope=11&screen=1242%2A2208&sign=9b2eea9c5c41842277ea6d2f2d99b1f3&st=1585155369440&sv=102"
+      body: "body=%7B%22riskParam%22%3A%7B%22eid%22%3A%22O5X6JYMZTXIEX4VBCBWEM5PTIZV6HXH7M3AI75EABM5GBZYVQKRGQJ5A2PPO5PSELSRMI72SYF4KTCB4NIU6AZQ3O6C3J7ZVEP3RVDFEBKVN2RER2GTQ%22%2C%22shshshfpb%22%3A%22v1%5C%2FzMYRjEWKgYe%2BUiNwEvaVlrHBQGVwqLx4CsS9PH1s0s0Vs9AWk%2B7vr9KSHh3BQd5NTukznDTZnd75xHzonHnw%3D%3D%22%2C%22pageClickKey%22%3A%22Babel_Sign%22%2C%22childActivityUrl%22%3A%22-1%22%7D%2C%22url%22%3A%22%22%2C%22params%22%3A%22%7B%5C%22enActK%5C%22%3A%5C%22TqD3p176apqugqvlliYges2vHCzLT2iKBXwuL1ZUXZEaZs%5C%2Fn4coLNw%3D%3D%5C%22%2C%5C%22isFloatLayer%5C%22%3Afalse%2C%5C%22ruleSrv%5C%22%3A%5C%2200561054_31979731_t1%5C%22%2C%5C%22signId%5C%22%3A%5C%22ERUpOSCcXegaZs%5C%2Fn4coLNw%3D%3D%5C%22%7D%22%2C%22geo%22%3A%7B%22lng%22%3A%220.000000%22%2C%22lat%22%3A%220.000000%22%7D%7D&client=apple&clientVersion=8.5.6&openudid=1fce88cd05c42fe2b054e846f11bdf33f016d676&rfs=0000&scope=11&sign=64237f66c3bc59abfd0693d62681ce72&st=1586017132302&sv=101"
     };
 
     $nobyda.post(JDCUUrl, function(error, response, data) {
@@ -2027,6 +1989,48 @@ function TotalCash() {
   });
 }
 
+function initial() {
+  merge = {
+    JDBean: {},
+    JDTurn: {},
+    JRBean: {},
+    JRDSign: {},
+    JDGStore: {},
+    JDClocks: {},
+    JDPet: {},
+    JDFSale: {},
+    JDBook: {},
+    JDShand: {},
+    JDMakeup: {},
+    JDWomen: {},
+    JDShoes: {},
+    JRGame: {},
+    JRSeeAds: {},
+    JDLive: {},
+    JDCare: {},
+    JDFood: {},
+    JDClean: {},
+    JDPrize: {},
+    JRSteel: {},
+    JDCash: {},
+    JDShake: {}
+  }
+
+  for (var i in merge) {
+    merge[i].success = 0;
+    merge[i].fail = 0;
+    merge[i].bean = 0;
+    merge[i].steel = 0;
+    merge[i].notify = '';
+    merge[i].key = 0;
+    merge[i].TSteel = 0;
+    merge[i].Cash = 0;
+    merge[i].TCash = 0;
+    merge[i].Qbear = 0;
+    merge[i].nickname = '';
+  }
+}
+
 function GetCookie() {
   try {
     if ($request.headers && $request.url.match(/api\.m\.jd\.com.*=signBean/)) {
@@ -2184,3 +2188,5 @@ function nobyda() {
     }
     return { isRequest, isJSBox, isNode, notify, write, read, get, post, log, done }
 };
+
+ReadCookie();

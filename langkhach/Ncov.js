@@ -1,3 +1,5 @@
+
+
 //Smart Qx&Surge 
 let isQuantumultX = $task !== undefined;
 let isSurge = $httpClient !== undefined;
@@ -105,48 +107,37 @@ if (isSurge) {
 }
 //end
 
-/*using surge cron*/
+/*
+Surge V4 ios, Mac
+Api by junookyo
 
-const region = "vn"
-const appIds = ["1436429074","1062022008","882914841","1481018071","406239138","1312014438","990591885","1141312799","1073473333","432850144","896694807","924695435","680469088","869346854","935754064","1035331258","904237743","946930094","1373567447","916366645","1382419586","1299735217","1460078746","333710667","1049254261","1489780246","1407367202","436577167","1481018071","1315744137","1436650069","980368562","1007355333","1126386264","492648096","950519698","317107309","539397400","1444671526","1416894836","1117998129","1462386180","558818638","691121579","1474856599","436577167","641613694","1312014438","1416894836","1117998129","1462386180","558818638","691121579","1474856599","436577167","641613694","1312014438"]
+[Script]
+cron "0 0 6-23/3 * * *" script-path=ncov.js
 
-var cacheData = $persistentStore.read()
-if (!cacheData) {
-    cacheData = {}
-} else {
-    cacheData = JSON.parse(cacheData)
+
+MITM = code.junookyo.xyz
+*/
+  var ncovUrl = {
+    url: 'https://code.junookyo.xyz/api/ncov-moh/data.json',
+  }
+$httpClient.post(ncovUrl, function(error, response, data){
+  if (error) {
+$notification.post("NCOV", "", "Bad connection")
+    $done(); 
+  } 
+ else{
+ if(response.statusCode == 200)
+{
+let obj= JSON.parse(data);
+if(obj["success"])
+{
+obj= obj["data"];
+$notification.post("NCOV ","","🇻🇳 VN: Số người nhiễm: " + obj["vietnam"]["cases"] +", Người chết: " + obj["vietnam"]["deaths"] + ", Hồi phục: " + obj["vietnam"]["recovered"] +"\n🌍 Global:  Số người nhiễm: " + obj["global"]["cases"] +", Người chết: " + obj["global"]["deaths"] + ", Hồi phục: " + obj["global"]["recovered"]);
+    $done();
 }
-
-$httpClient.post('https://itunes.apple.com/lookup?id=' + appIds + "&country=" + region, function (error, response, data) {
-    if (error) {
-        console.log(error);
-        $notification.post("App Pricer", "bad connection")
-        $done()
-    } else {
-        let appData = JSON.parse(data).results
-        let priceChanged = ""
-        let newAppAdded = ""
-        for (var i = 0; i < appData.length; i++) {
-            if (cacheData[appData[i].trackId]) {
-                if (appData[i].formattedPrice != cacheData[appData[i].trackId].price) {
-                    priceChanged = priceChanged + "🏷 " + appData[i].trackName + "  " + cacheData[appData[i].trackId].price + " → " + appData[i].formattedPrice + "\n"
-                    cacheData[appData[i].trackId].price = appData[i].formattedPrice
-                }
-            } else {
-                newAppAdded = newAppAdded + "🏷 " + appData[i].trackName + "  " + appData[i].formattedPrice + "\n"
-                cacheData[appData[i].trackId] = {
-                    name: appData[i].trackName,
-                    price: appData[i].formattedPrice
-                }
-            }
-        }
-        if (priceChanged) {
-            $notification.post("Price Changed", "", priceChanged)
-        }
-        if (newAppAdded) {
-            $notification.post("New Apps Added", "", newAppAdded)
-        }
-        $persistentStore.write(JSON.stringify(cacheData))
-        $done()
-    }
-})
+}
+else{
+$notification.post("NCOV", "", "API ERROR");
+}
+}
+});
