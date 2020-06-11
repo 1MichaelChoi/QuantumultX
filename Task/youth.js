@@ -1,4 +1,5 @@
 /*
+更新时间: 2020-06-08 20:45
 
 赞赏:中青邀请码`46308484`,农妇山泉 -> 有点咸，万分感谢
 
@@ -181,12 +182,12 @@ function signInfo() {
 
 function Invitant() {      
   return new Promise((resolve, reject) => {
+   CookieVal = JSON.parse(signheaderVal)['Cookie']
     const url = { 
-      url: `https://kd.youth.cn/WebApi/User/fillCode`, 
-     headers: JSON.parse(signheaderVal),
-     body: `{"code": "46308484"}`,
+      url: `https://kandian.youth.cn/user/mmsp/5625d269c769a5b3dc1087b7957910d0?avatar=share_reward_sign=0&code=021koBJS0F7XW12X5vLS08kCJS0koBJm&state=46308484`, 
+     headers: {Cookie: CookieVal},
 }
-   sy.post(url, (error, response, data) =>
+  sy.get(url, (error, response, data) =>
  {
    //sy.log(`Invitdata:${data}`)
  })
