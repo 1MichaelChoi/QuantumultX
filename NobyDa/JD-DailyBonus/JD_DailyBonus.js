@@ -86,7 +86,7 @@ hostname = api.m.jd.com
 
 var LogDetails = false; //是否开启响应日志, true则开启
 
-var stop = 10000; //自定义延迟签到,单位毫秒. 默认并发无延迟. (延迟作用于每个签到接口, 如填入延迟则切换顺序签到. Surge用户请注意在UI界面调整脚本超时)
+var stop = 5000; //自定义延迟签到,单位毫秒. 默认并发无延迟. (延迟作用于每个签到接口, 如填入延迟则切换顺序签到. Surge用户请注意在UI界面调整脚本超时)
 
 var DeleteCookie = false; //是否清除Cookie, true则开启
 
@@ -120,9 +120,11 @@ async function all() {
       JingDongLive(stop), //京东智能生活馆
       JingDongClean(stop), //京东清洁馆
       JDPersonalCare(stop), //京东个人护理馆
-      JingDongJewels(stop), //京东珠宝馆var stop = 10000; //自定义延迟签到,单位毫秒,(如填200则每个接口延迟0.2秒执行),默认无延迟
->>>>>>>+master
- //京东金贴
+      JingDongJewels(stop), //京东珠宝馆
+      JDMagicCube(stop), //京东小魔方
+      JingDongFish(stop), //京东小京鱼
+      JingDongPrize(stop), //京东抽大奖
+      JingDongSubsidy(stop), //京东金贴
       JingDongShake(stop) //京东摇一摇
     ])
   } else {
